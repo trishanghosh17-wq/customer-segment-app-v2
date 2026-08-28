@@ -25,8 +25,8 @@ from sklearn.ensemble import RandomForestClassifier
 # PAGE CONFIG
 # ============================================================
 st.set_page_config(
-    page_title="dashboard.vi — Customer Intelligence",
-    page_icon="✦",
+    page_title="Customer Segment Predictor",
+    page_icon="🛍️",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -418,285 +418,6 @@ hr::after {
 <div class="grain-overlay"></div>
 """, unsafe_allow_html=True)
 
-# ============================================================
-# PREMIUM SaaS REFINEMENT — motion, glass, onboarding, voice
-# ============================================================
-st.markdown("""
-<style>
-/* Animated ambient background */
-[data-testid="stAppViewContainer"] {
-    background:
-      radial-gradient(circle at 8% 5%, rgba(201,138,46,.12), transparent 28%),
-      radial-gradient(circle at 92% 12%, rgba(47,111,99,.10), transparent 26%),
-      linear-gradient(180deg, #14131b 0%, #111017 100%);
-}
-[data-testid="stAppViewContainer"]::before {
-    content:"";
-    position:fixed; inset:-20%;
-    pointer-events:none; z-index:0;
-    background:
-      radial-gradient(circle at 30% 40%, rgba(201,138,46,.055), transparent 22%),
-      radial-gradient(circle at 72% 65%, rgba(47,111,99,.05), transparent 24%);
-    animation: ambientDrift 14s ease-in-out infinite alternate;
-}
-@keyframes ambientDrift {
-    from { transform: translate3d(-1%, -1%, 0) scale(1); }
-    to { transform: translate3d(2%, 1%, 0) scale(1.06); }
-}
-[data-testid="stHeader"] { background: rgba(20,19,27,.55); backdrop-filter: blur(14px); }
-
-/* Premium hero */
-.hero {
-    border-radius: 18px !important;
-    padding: 2.5rem 2.7rem 2.7rem !important;
-    border: 1px solid rgba(255,255,255,.10) !important;
-    box-shadow: 0 28px 70px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.06) !important;
-    background:
-      radial-gradient(circle at 88% 18%, rgba(201,138,46,.18), transparent 22%),
-      linear-gradient(135deg, #211f2b 0%, #14131b 72%) !important;
-}
-.hero::after {
-    content:"AI-POWERED CUSTOMER INTELLIGENCE";
-    position:absolute; right:22px; bottom:18px;
-    font-family:'IBM Plex Mono',monospace; font-size:.55rem;
-    letter-spacing:.15em; color:#ffffff55;
-}
-.hero .stamp {
-    border-radius:50% !important;
-    box-shadow: 0 0 30px rgba(201,138,46,.18);
-}
-.hero h1 { font-size: clamp(2.2rem, 5vw, 4rem) !important; line-height:1 !important; }
-.hero .subtitle { font-size:1rem !important; max-width:680px !important; }
-
-/* Floating premium cards */
-.kpi-card {
-    border-radius:16px !important;
-    border:1px solid rgba(255,255,255,.08) !important;
-    border-top:2px solid var(--gold) !important;
-    background:linear-gradient(145deg, rgba(35,33,45,.92), rgba(20,19,27,.92)) !important;
-    backdrop-filter:blur(14px);
-    box-shadow:0 16px 35px rgba(0,0,0,.25) !important;
-}
-.kpi-card:hover {
-    transform:translateY(-6px) scale(1.01) !important;
-    box-shadow:0 22px 45px rgba(0,0,0,.38), 0 0 0 1px rgba(201,138,46,.14) !important;
-}
-.kpi-value { letter-spacing:-.04em; }
-
-/* Section glass containers */
-div[data-testid="stVerticalBlockBorderWrapper"] {
-    border-radius:18px !important;
-    border-color:rgba(255,255,255,.08) !important;
-    background:rgba(28,26,38,.40) !important;
-    backdrop-filter:blur(10px);
-}
-
-/* Inputs */
-[data-baseweb="input"] > div,
-[data-baseweb="select"] > div,
-[data-baseweb="textarea"] > div {
-    border-radius:12px !important;
-    background:rgba(255,255,255,.035) !important;
-    border-color:rgba(255,255,255,.12) !important;
-    transition:all .2s ease !important;
-}
-[data-baseweb="input"] > div:focus-within,
-[data-baseweb="select"] > div:focus-within {
-    border-color:rgba(201,138,46,.75) !important;
-    box-shadow:0 0 0 3px rgba(201,138,46,.10) !important;
-}
-[data-testid="stSlider"] [role="slider"] {
-    box-shadow:0 0 0 5px rgba(201,138,46,.08);
-}
-
-/* Buttons */
-.stButton > button, .stDownloadButton > button {
-    border-radius:12px !important;
-    min-height:42px !important;
-    font-weight:600 !important;
-    transition:all .18s cubic-bezier(.2,.8,.2,1) !important;
-}
-.stButton > button:hover, .stDownloadButton > button:hover {
-    transform:translateY(-2px) !important;
-}
-
-/* Result */
-.result-card {
-    border-radius:18px !important;
-    background:
-      radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--tier-color) 15%, transparent), transparent 28%),
-      linear-gradient(145deg, #211f2b, #15141c) !important;
-    animation: resultPop .7s cubic-bezier(.16,1,.3,1) both !important;
-}
-@keyframes resultPop {
-    0% { opacity:0; transform:translateY(18px) scale(.97); }
-    65% { opacity:1; transform:translateY(-3px) scale(1.005); }
-    100% { transform:translateY(0) scale(1); }
-}
-
-/* Segment chips */
-.segment-chip { border-radius:14px !important; }
-.segment-chip:hover { transform:translateY(-5px) scale(1.01) !important; }
-
-/* Pro pill + helper cards */
-.pro-pill {
-    display:inline-flex; align-items:center; gap:.35rem;
-    padding:.35rem .65rem; border-radius:999px;
-    background:linear-gradient(135deg,#dba54a,#a5721f);
-    color:#14131b; font-weight:800; font-size:.68rem;
-    letter-spacing:.08em; text-transform:uppercase;
-    box-shadow:0 6px 18px rgba(201,138,46,.25);
-}
-.hint-card {
-    border:1px dashed rgba(201,138,46,.28);
-    background:rgba(201,138,46,.055);
-    border-radius:14px; padding:.8rem 1rem;
-    font-size:.83rem; color:#e8e2d0;
-}
-.step-pill {
-    display:inline-block; padding:.38rem .65rem; margin-right:.35rem;
-    border-radius:999px; font-family:'IBM Plex Mono',monospace;
-    font-size:.68rem; letter-spacing:.06em;
-    border:1px solid rgba(255,255,255,.10); color:#aaa39a;
-}
-.step-pill.active { border-color:#c98a2e; color:#f4eedd; background:rgba(201,138,46,.10); }
-
-/* Sidebar */
-section[data-testid="stSidebar"] {
-    background:linear-gradient(180deg,#15141d,#111017) !important;
-    border-right:1px solid rgba(255,255,255,.06);
-}
-section[data-testid="stSidebar"] .stButton > button { width:100%; }
-
-/* Reduce-motion accessibility */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration:.01ms !important; transition:none !important; }
-}
-
-/* ============================================================
-   dashboard.vi — PRO MAX EXPERIENCE LAYER
-   ============================================================ */
-@keyframes floatCard {
-    0%,100% { transform: translateY(0px); }
-    50% { transform: translateY(-5px); }
-}
-@keyframes pulseGlow {
-    0%,100% { box-shadow: 0 0 0 rgba(201,138,46,0); }
-    50% { box-shadow: 0 0 32px rgba(201,138,46,.13); }
-}
-@keyframes shimmer {
-    0% { background-position: -500px 0; }
-    100% { background-position: 500px 0; }
-}
-@keyframes orbit {
-    from { transform: rotate(0deg) translateX(18px) rotate(0deg); }
-    to { transform: rotate(360deg) translateX(18px) rotate(-360deg); }
-}
-
-/* Premium page atmosphere */
-[data-testid="stAppViewContainer"]:before {
-    content: "";
-    position: fixed;
-    inset: -20%;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      radial-gradient(circle at 15% 15%, rgba(201,138,46,.10), transparent 25%),
-      radial-gradient(circle at 85% 20%, rgba(47,111,99,.09), transparent 24%),
-      radial-gradient(circle at 70% 85%, rgba(178,58,72,.055), transparent 22%);
-    animation: floatCard 14s ease-in-out infinite;
-}
-
-/* Glassy Streamlit containers */
-[data-testid="stVerticalBlockBorderWrapper"] {
-    border-radius: 18px !important;
-    border-color: rgba(201,138,46,.16) !important;
-    background: rgba(244,238,221,.025) !important;
-    backdrop-filter: blur(12px);
-}
-
-/* Buttons become tactile */
-.stButton > button, .stDownloadButton > button {
-    border-radius: 12px !important;
-    border: 1px solid rgba(201,138,46,.28) !important;
-    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease !important;
-}
-.stButton > button:hover, .stDownloadButton > button:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 10px 28px rgba(0,0,0,.18), 0 0 18px rgba(201,138,46,.10) !important;
-    border-color: rgba(201,138,46,.55) !important;
-}
-.stButton > button:active { transform: translateY(0) scale(.985) !important; }
-
-/* Inputs */
-[data-testid="stNumberInput"] input,
-[data-testid="stTextInput"] input,
-[data-testid="stSelectbox"] div[data-baseweb="select"],
-[data-testid="stSlider"] {
-    transition: box-shadow .2s ease, border-color .2s ease !important;
-}
-[data-testid="stNumberInput"] input:focus,
-[data-testid="stTextInput"] input:focus {
-    box-shadow: 0 0 0 2px rgba(201,138,46,.18), 0 0 20px rgba(201,138,46,.08) !important;
-}
-
-/* Premium cards */
-.metric-card, .kpi-card, .result-card, .hint-card, .segment-chip {
-    animation: fadeInUp .55s cubic-bezier(.2,.7,.2,1) both;
-}
-.result-card { animation: fadeInUp .6s cubic-bezier(.2,.7,.2,1) both, pulseGlow 4s ease-in-out 1s infinite; }
-
-/* A subtle loading shimmer class usable by custom blocks */
-.skeleton {
-    background: linear-gradient(90deg, rgba(255,255,255,.035) 25%, rgba(255,255,255,.09) 37%, rgba(255,255,255,.035) 63%);
-    background-size: 800px 100%;
-    animation: shimmer 1.8s infinite linear;
-    border-radius: 12px;
-}
-
-/* Floating assistant button */
-.voice-fab {
-    position: fixed;
-    right: 24px;
-    bottom: 24px;
-    z-index: 9999;
-    width: 54px;
-    height: 54px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--gold);
-    color: var(--ink);
-    font-size: 1.15rem;
-    box-shadow: 0 12px 35px rgba(0,0,0,.28);
-    animation: pulseGlow 3s ease-in-out infinite;
-}
-
-/* Step rail */
-.workflow-rail {
-    display:flex; gap:8px; align-items:center; margin:.4rem 0 1.2rem;
-}
-.workflow-node {
-    flex:1; padding:10px 12px; border:1px solid rgba(201,138,46,.18);
-    border-radius:12px; text-align:center; font-size:.72rem; letter-spacing:.06em;
-    text-transform:uppercase; background:rgba(255,255,255,.025);
-}
-.workflow-node.active { border-color:rgba(201,138,46,.65); background:rgba(201,138,46,.08); }
-.workflow-line { height:1px; width:24px; background:rgba(201,138,46,.25); }
-
-@media (max-width: 760px) {
-    .hero { padding:1.5rem !important; }
-    .hero h1 { font-size:1.65rem !important; max-width:92% !important; }
-    .hero .stamp { display:none !important; }
-    .workflow-line { display:none; }
-}
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
-}
-</style>
-""", unsafe_allow_html=True)
-
 
 def confetti_burst(pieces=140, colors=None):
     """Fires a lightweight client-side confetti animation (canvas-confetti via CDN)."""
@@ -764,26 +485,6 @@ def animated_words(text, base_delay=0.05, css_class="word"):
         for i, w in enumerate(words)
     )
     return spans
-
-def speak_result(text):
-    """Uses the browser's built-in speech synthesis; no API key required."""
-    safe = str(text).replace("\\", "\\\\").replace("'", "\\'")
-    components.html(
-        f"""
-        <script>
-        try {{
-            const utterance = new SpeechSynthesisUtterance('{safe}');
-            utterance.rate = 0.92;
-            utterance.pitch = 1.0;
-            window.speechSynthesis.cancel();
-            window.speechSynthesis.speak(utterance);
-        }} catch (e) {{}}
-        </script>
-        """,
-        height=0,
-        width=0,
-    )
-
 
 # ============================================================
 # MODEL LOADING (with graceful synthetic fallback demo model)
@@ -981,8 +682,8 @@ if "history" not in st.session_state:
 st.markdown(f"""
 <div class="hero">
   <div class="stamp">Verified<br/>Record</div>
-  <p class="eyebrow">dashboard.vi · CUSTOMER INTELLIGENCE</p>
-  <h1>Customer Intelligence, beautifully simplified.</h1>
+  <p class="eyebrow">Customer Ledger · RFM Analysis</p>
+  <h1>Segment Predictor</h1>
   <p class="subtitle">{animated_words("Score customers by Recency, Frequency, and Monetary value — then act on it.")}</p>
 </div>
 <div class="perforation"></div>
@@ -1001,8 +702,6 @@ if not is_real_model:
 # SIDEBAR
 # ============================================================
 with st.sidebar:
-    st.markdown('<span class="pro-pill">✦ dashboard.vi · PRO EXPERIENCE</span>', unsafe_allow_html=True)
-    st.write("")
     st.header("📊 Model Info")
     kpi_card("Model type", type(clf).__name__, delay=0.0)
     st.write("")
@@ -1025,12 +724,6 @@ with st.sidebar:
         st.caption(f"⚡ Sharpened at T={conf_temp:.2f} — predictions unchanged, only the % display is amplified.")
     else:
         st.caption("Showing raw model confidence (unmodified).")
-
-    voice_enabled = st.toggle(
-        "🔊 Voice insights",
-        value=False,
-        help="After a prediction, the browser can read the segment and confidence aloud."
-    )
 
     st.divider()
     st.header("🕘 Session History")
@@ -1060,34 +753,6 @@ with st.sidebar:
         st.write("")
 
 # ============================================================
-# QUICK START / ONBOARDING
-# ============================================================
-with st.expander("✨ New here? 30-second guide", expanded=False):
-    st.markdown("""
-    <div class="hint-card">
-    <b>1 · Predict</b> — enter Recency, Frequency and Monetary value.<br>
-    <b>2 · Understand</b> — the model returns a segment, confidence and customer profile.<br>
-    <b>3 · Act</b> — use the Growth Playbook to choose a practical campaign.<br>
-    <b>4 · Scale</b> — upload a customer file to score many customers at once.
-    </div>
-    """, unsafe_allow_html=True)
-
-# ============================================================
-# PRO WORKFLOW RAIL
-# ============================================================
-st.markdown("""
-<div class="workflow-rail">
-  <div class="workflow-node active">01 · Discover</div>
-  <div class="workflow-line"></div>
-  <div class="workflow-node">02 · Classify</div>
-  <div class="workflow-line"></div>
-  <div class="workflow-node">03 · Act</div>
-  <div class="workflow-line"></div>
-  <div class="workflow-node">04 · Scale</div>
-</div>
-""", unsafe_allow_html=True)
-
-# ============================================================
 # TABS
 # ============================================================
 tab1, tab2, tab3, tab4 = st.tabs([
@@ -1098,288 +763,118 @@ tab1, tab2, tab3, tab4 = st.tabs([
 ])
 
 # ------------------------------------------------------------
-# TAB 1 — SINGLE PREDICTION / AI CLASSIFICATION / ACTION PLAN
+# TAB 1 — SINGLE PREDICTION
 # ------------------------------------------------------------
-# The original design used decorative HTML pills for these three steps.
-# They looked like buttons but could not be clicked.  This version uses
-# real Streamlit buttons + session state, so all three steps are functional.
 with tab1:
-    if "single_step" not in st.session_state:
-        st.session_state.single_step = "input"
-    if "single_prediction" not in st.session_state:
-        st.session_state.single_prediction = None
+    st.subheader("Enter customer details")
 
-    st.subheader("Customer intelligence workflow")
-    st.caption("Move through the three stages below. Your prediction is saved during this session.")
+    input_mode = st.radio("Input method", ["Sliders", "Number fields"], horizontal=True)
+    col1, col2, col3 = st.columns(3)
 
-    step1, step2, step3 = st.columns(3)
-    with step1:
-        if st.button("01 · RFM INPUT", use_container_width=True,
-                     type="primary" if st.session_state.single_step == "input" else "secondary",
-                     key="step_input"):
-            st.session_state.single_step = "input"
-            st.rerun()
-    with step2:
-        if st.button("02 · AI CLASSIFICATION", use_container_width=True,
-                     type="primary" if st.session_state.single_step == "classification" else "secondary",
-                     key="step_classification"):
-            if st.session_state.single_prediction is None:
-                st.toast("Run a prediction first.", icon="💡")
-                st.session_state.single_step = "input"
-            else:
-                st.session_state.single_step = "classification"
-            st.rerun()
-    with step3:
-        if st.button("03 · ACTION PLAN", use_container_width=True,
-                     type="primary" if st.session_state.single_step == "action" else "secondary",
-                     key="step_action"):
-            if st.session_state.single_prediction is None:
-                st.toast("Run a prediction first.", icon="💡")
-                st.session_state.single_step = "input"
-            else:
-                st.session_state.single_step = "action"
-            st.rerun()
+    if input_mode == "Sliders":
+        with col1:
+            recency = st.slider("Recency (days since last purchase)", 0, 400, 30)
+        with col2:
+            frequency = st.slider("Frequency (number of orders)", 1, 100, 3)
+        with col3:
+            monetary = st.slider("Monetary (total spend, £)", 0.0, 20000.0, 500.0, step=10.0)
+    else:
+        with col1:
+            recency = st.number_input("Recency (days since last purchase)", min_value=0, max_value=1000, value=30)
+        with col2:
+            frequency = st.number_input("Frequency (number of orders)", min_value=1, max_value=500, value=3)
+        with col3:
+            monetary = st.number_input("Monetary (total spend, £)", min_value=0.0, max_value=1_000_000.0, value=500.0, step=10.0)
 
-    st.write("")
+    predict_clicked = st.button("Predict Segment", type="primary", use_container_width=False)
 
-    # ---------------- RFM INPUT ----------------
-    if st.session_state.single_step == "input":
-        st.markdown(
-            '<div class="hint-card">💡 <b>RFM guide:</b> Lower Recency is better. Higher Frequency and Monetary value usually indicate stronger customer value.</div>',
-            unsafe_allow_html=True,
-        )
-        st.write("")
-
-        input_mode = st.radio("Input method", ["Sliders", "Number fields"], horizontal=True, key="single_input_mode")
-        col1, col2, col3 = st.columns(3)
-
-        if input_mode == "Sliders":
-            with col1:
-                recency = st.slider("Recency (days since last purchase)", 0, 400, 30, key="single_recency_slider")
-            with col2:
-                frequency = st.slider("Frequency (number of orders)", 1, 100, 3, key="single_frequency_slider")
-            with col3:
-                monetary = st.slider("Monetary (total spend, £)", 0.0, 20000.0, 500.0, step=10.0, key="single_monetary_slider")
-        else:
-            with col1:
-                recency = st.number_input("Recency (days since last purchase)", min_value=0, max_value=1000, value=30, key="single_recency_number")
-            with col2:
-                frequency = st.number_input("Frequency (number of orders)", min_value=1, max_value=500, value=3, key="single_frequency_number")
-            with col3:
-                monetary = st.number_input("Monetary (total spend, £)", min_value=0.0, max_value=1_000_000.0, value=500.0, step=10.0, key="single_monetary_number")
-
-        with st.expander("What do these values mean?", expanded=False):
-            h1, h2, h3 = st.columns(3)
-            with h1:
-                st.markdown("**Recency**")
-                st.caption("Days since the customer's latest purchase. Smaller is generally better.")
-            with h2:
-                st.markdown("**Frequency**")
-                st.caption("Number of purchases/orders. Higher generally means stronger engagement.")
-            with h3:
-                st.markdown("**Monetary**")
-                st.caption("Total customer spend. Higher generally means greater customer value.")
-
-        if st.button("✨ Analyze Customer", type="primary", use_container_width=True, key="analyze_customer"):
-            with st.spinner("Analyzing RFM profile…"):
-                segment, proba = predict_segment(recency, frequency, monetary, temperature=conf_temp)
-                confidence = float(np.max(proba))
-                sorted_proba = np.sort(proba)[::-1]
-                margin = float(sorted_proba[0] - sorted_proba[1]) if len(sorted_proba) > 1 else 1.0
-                info = SEGMENT_INFO[segment]
-
-                st.session_state.single_prediction = {
-                    "recency": float(recency),
-                    "frequency": float(frequency),
-                    "monetary": float(monetary),
-                    "segment": segment,
-                    "proba": np.asarray(proba, dtype=float),
-                    "confidence": confidence,
-                    "margin": margin,
-                }
-
-                new_row = pd.DataFrame([{
-                    "Timestamp": datetime.now().strftime("%H:%M:%S"),
-                    "Recency": recency,
-                    "Frequency": frequency,
-                    "Monetary": monetary,
-                    "Segment": segment,
-                    "Confidence": round(confidence, 3),
-                }])
-                st.session_state.history = pd.concat([st.session_state.history, new_row], ignore_index=True)
-
-                if confidence >= 0.95:
-                    confetti_burst(90, colors=[SEGMENT_COLORS[segment], "#C98A2E", "#f4eedd"])
-                    st.toast(f"Outstanding match: {segment}", icon="🏅")
-                elif confidence >= 0.85:
-                    confetti_burst(60, colors=[SEGMENT_COLORS[segment], "#f4eedd"])
-                    st.toast(f"High-confidence match: {segment}", icon="✨")
-                else:
-                    st.toast("Prediction saved. Review the AI Classification step.", icon="📝")
-
-            st.session_state.single_step = "classification"
-            st.rerun()
-
-        if st.session_state.single_prediction is not None:
-            st.info("A prediction is already available. Click **02 · AI CLASSIFICATION** above to review it, or analyze a new customer.", icon="✨")
-
-    # ---------------- AI CLASSIFICATION ----------------
-    elif st.session_state.single_step == "classification":
-        pred = st.session_state.single_prediction
-        segment = pred["segment"]
-        proba = pred["proba"]
-        confidence = pred["confidence"]
-        margin = pred["margin"]
+    if predict_clicked:
+        segment, proba = predict_segment(recency, frequency, monetary, temperature=conf_temp)
         info = SEGMENT_INFO[segment]
-        color = SEGMENT_COLORS[segment]
+        confidence = proba.max()
+        sorted_proba = np.sort(proba)[::-1]
+        margin = sorted_proba[0] - sorted_proba[1] if len(sorted_proba) > 1 else 1.0
 
-        st.markdown(
-            '<div class="hint-card">🧠 <b>AI Classification:</b> the trained model evaluates the transformed RFM values and returns the most likely customer segment plus probability estimates.</div>',
-            unsafe_allow_html=True,
-        )
-        st.write("")
+        # log to session history
+        new_row = pd.DataFrame([{
+            "Timestamp": datetime.now().strftime("%H:%M:%S"),
+            "Recency": recency, "Frequency": frequency, "Monetary": monetary,
+            "Segment": segment, "Confidence": round(float(confidence), 3),
+        }])
+        st.session_state.history = pd.concat([st.session_state.history, new_row], ignore_index=True)
 
-        res_col, profile_col = st.columns([1.05, 0.95])
+        if confidence >= 0.95:
+            confetti_burst(90, colors=[SEGMENT_COLORS[segment], "#C98A2E", "#f4eedd"])
+            st.toast(f"Outstanding match: {segment}", icon="🏅")
+        elif confidence >= 0.85:
+            confetti_burst(60, colors=[SEGMENT_COLORS[segment], "#f4eedd"])
+            st.toast(f"High-confidence match: {segment}", icon="✨")
+        else:
+            st.toast("Prediction logged to session history.", icon="📝")
+
+        res_col, radar_col = st.columns([1, 1])
+
         with res_col:
-            st.markdown(f"""
-            <div class="result-card" style="--tier-color:{color};">
-                <div>
-                    <span class="result-badge">{info['priority']} priority</span>
-                    <div class="result-title">{info['emoji']} {segment}</div>
-                    <div class="result-desc">{info['desc']}</div>
-                    <div class="confidence-track"><div class="confidence-fill" style="width:{confidence*100:.1f}%;"></div></div>
-                    <div class="confidence-label">{confidence:.1%} confidence · margin over runner-up: {margin:.1%}</div>
+            color = SEGMENT_COLORS[segment]
+            c1, c2 = st.columns([2, 1])
+            with c1:
+                st.markdown(f"""
+                <div class="result-card" style="--tier-color:{color}; flex:1;">
+                    <div>
+                        <span class="result-badge">{info['priority']} priority</span>
+                        <div class="result-title">{info['emoji']} {segment}</div>
+                        <div class="result-desc">{info['desc']}</div>
+                        <div class="result-desc" style="margin-top:.5rem;"><b>Recommended action:</b> {info['action']}</div>
+                        <div class="confidence-track">
+                            <div class="confidence-fill" style="width:{confidence*100:.1f}%;"></div>
+                        </div>
+                        <div class="confidence-label">{confidence:.1%} confidence &nbsp;·&nbsp; margin over runner-up: {margin:.1%}</div>
+                    </div>
                 </div>
-            </div>
-            """, unsafe_allow_html=True)
-            if voice_enabled:
-                if st.button("🔊 Read AI result aloud", use_container_width=True, key="speak_classification"):
-                    speak_result(
-                        f"Customer segment: {segment}. Confidence: {confidence:.0%}. Recommended action: {info['action']}"
-                    )
+                """, unsafe_allow_html=True)
+            with c2:
+                st.write("")
+                confidence_ring(confidence, color)
+            st.write("")
 
             prob_df = pd.DataFrame({"Segment": clf.classes_, "Probability": proba}).sort_values("Probability", ascending=True)
-            fig = px.bar(
-                prob_df, x="Probability", y="Segment", orientation="h", text="Probability",
-                color="Segment", color_discrete_map=SEGMENT_COLORS,
-            )
+            fig = px.bar(prob_df, x="Probability", y="Segment", orientation="h", text="Probability",
+                         color="Segment", color_discrete_map=SEGMENT_COLORS)
             fig.update_traces(texttemplate="%{text:.1%}", textposition="outside")
-            fig.update_layout(showlegend=False, xaxis=dict(range=[0, 1], tickformat=".0%"), yaxis_title="", height=300, margin=dict(t=10, b=10), transition_duration=500)
+            fig.update_layout(showlegend=False, xaxis=dict(range=[0, 1], tickformat=".0%"),
+                               yaxis_title="", height=280, margin=dict(t=10, b=10),
+                               transition_duration=500)
             st.plotly_chart(style_fig(fig), use_container_width=True)
 
-        with profile_col:
-            st.markdown("**Customer profile**")
-            r_pct = percentile_of(pred["recency"], REF["Recency"], invert=True)
-            f_pct = percentile_of(pred["frequency"], REF["Frequency"])
-            m_pct = percentile_of(pred["monetary"], REF["Monetary"])
+        with radar_col:
+            st.markdown("**How this customer compares to the population**")
+            r_pct = percentile_of(recency, REF["Recency"], invert=True)  # lower recency = better
+            f_pct = percentile_of(frequency, REF["Frequency"])
+            m_pct = percentile_of(monetary, REF["Monetary"])
+
             radar = go.Figure()
             radar.add_trace(go.Scatterpolar(
                 r=[r_pct, f_pct, m_pct, r_pct],
-                theta=["Recency", "Frequency", "Monetary", "Recency"],
-                fill="toself", name="This customer", line_color=color,
+                theta=["Recency (recentness)", "Frequency", "Monetary", "Recency (recentness)"],
+                fill="toself", name="This customer",
+                line_color=SEGMENT_COLORS[segment],
             ))
             radar.update_layout(
                 polar=dict(radialaxis=dict(visible=True, range=[0, 100], ticksuffix="%")),
-                showlegend=False, height=360, margin=dict(t=20, b=20), transition_duration=600,
+                showlegend=False, height=350, margin=dict(t=20, b=20),
+                transition_duration=600,
             )
             st.plotly_chart(style_fig(radar), use_container_width=True)
-            m1, m2, m3 = st.columns(3)
-            m1.metric("Recency", f"{pred['recency']:,.0f} days")
-            m2.metric("Frequency", f"{pred['frequency']:,.0f}")
-            m3.metric("Monetary", f"£{pred['monetary']:,.0f}")
+            st.caption("Percentile rank vs. a reference customer population (higher = stronger on that dimension).")
 
-        st.success(f"**Next step:** open **03 · ACTION PLAN** above for a segment-specific growth strategy.", icon="🚀")
-
-    # ---------------- ACTION PLAN ----------------
-    else:
-        pred = st.session_state.single_prediction
-        segment = pred["segment"]
-        info = SEGMENT_INFO[segment]
-        play = GROWTH_PLAYBOOK[segment]
-        color = SEGMENT_COLORS[segment]
-
-        st.markdown(
-            f'<div class="hint-card">🚀 <b>Action Plan for {segment}:</b> turn the classification into a practical customer-growth workflow.</div>',
-            unsafe_allow_html=True,
-        )
-        st.write("")
-
-        st.markdown(f"""
-        <div class="result-card" style="--tier-color:{color};">
-            <span class="result-badge">{info['priority']} priority</span>
-            <div class="result-title">{info['emoji']} {segment}</div>
-            <div class="result-desc"><b>Objective:</b> {play['objective']}</div>
-        </div>
-        """, unsafe_allow_html=True)
-        st.write("")
-
-        st.markdown("### 🎯 Recommended actions")
-        for i, (name, desc, channel) in enumerate(play["tactics"], start=1):
-            st.markdown(f"""
-            <div class="kpi-card" style="text-align:left; margin-bottom:.65rem; animation-delay:{i*0.08}s;">
-                <div class="kpi-label">STEP {i} · {channel}</div>
-                <div style="font-weight:700; font-size:1.02rem; margin-top:.2rem;">{name}</div>
-                <div style="opacity:.82; font-size:.9rem; margin-top:.25rem;">{desc}</div>
-            </div>
-            """, unsafe_allow_html=True)
-
-        st.markdown("### 📌 Success metric")
-        st.info(play["kpi"], icon="📈")
-
-        st.markdown("### 💰 Opportunity simulator")
-        uplift_default = int(round(play["uplift_pct"] * 100))
-        uplift_pct = st.slider(
-            "Assumed incremental spend uplift",
-            0, 30, uplift_default, 1, format="%d%%",
-            key=f"single_action_uplift_{segment}",
-            help="Planning assumption only — this is not a guaranteed forecast.",
-        )
-        estimated_gain = pred["monetary"] * uplift_pct / 100
-        a1, a2, a3 = st.columns(3)
-        a1.metric("Customer value", f"£{pred['monetary']:,.0f}")
-        a2.metric("Assumed uplift", f"{uplift_pct}%")
-        a3.metric("Estimated opportunity", f"£{estimated_gain:,.0f}")
-
-        action_text = [
-            "CUSTOMER ACTION PLAN",
-            f"Segment: {segment}",
-            f"Priority: {info['priority']}",
-            f"Confidence: {pred['confidence']:.1%}",
-            f"Objective: {play['objective']}",
-            "",
-        ]
-        for i, (name, desc, channel) in enumerate(play["tactics"], 1):
-            action_text.append(f"{i}. {name} [{channel}] — {desc}")
-        action_text.extend([
-            "",
-            f"Track: {play['kpi']}",
-            f"Estimated opportunity: £{estimated_gain:,.0f}",
-            "Note: opportunity is a planning assumption, not a forecast.",
-        ])
-
-        dl_col, new_col = st.columns(2)
-        with dl_col:
-            st.download_button(
-                "⬇️ Download Action Plan",
-                "\n".join(action_text).encode("utf-8"),
-                "customer_action_plan.txt",
-                "text/plain",
-                type="primary",
-                use_container_width=True,
-            )
-        with new_col:
-            if st.button("↩️ Analyze another customer", use_container_width=True, key="new_customer"):
-                st.session_state.single_step = "input"
-                st.session_state.single_prediction = None
-                st.rerun()
+        st.divider()
+        render_growth_playbook(segment, monetary_value=monetary, customer_count=1, key_suffix="single")
 
     if not st.session_state.history.empty:
         with st.expander(f"📜 Full session history ({len(st.session_state.history)} predictions)"):
             st.dataframe(st.session_state.history, use_container_width=True)
-            trend = px.bar(
-                st.session_state.history["Segment"].value_counts().reset_index(),
-                x="Segment", y="count", color="Segment", color_discrete_map=SEGMENT_COLORS,
-            )
+            trend = px.bar(st.session_state.history["Segment"].value_counts().reset_index(),
+                           x="Segment", y="count", color="Segment", color_discrete_map=SEGMENT_COLORS)
             trend.update_layout(showlegend=False, height=250, margin=dict(t=10, b=10))
             st.plotly_chart(style_fig(trend), use_container_width=True)
 
@@ -1695,14 +1190,6 @@ Replace the demo model with your own by placing a trained classifier at
 `.predict_proba()` and expect `log1p`-transformed `Recency`, `Frequency`, `Monetary` features.
 """)
 
-st.markdown("""
-<div class="hint-card" style="margin-top:1.5rem; text-align:center;">
-    <span class="pro-pill">✦ PRO</span>
-    &nbsp; Unlock deeper analytics, automated reports, AI-assisted insights and team workflows.
-    <br><small style="opacity:.65;">Freemium concept UI — no payment is required for this demo.</small>
-</div>
-""", unsafe_allow_html=True)
-
 st.markdown(f"""
 <div class="ledger-footer">
     {("Model — " + type(clf).__name__) if is_real_model else "Model — Synthetic Demo (Random Forest)"}
@@ -1710,4 +1197,3 @@ st.markdown(f"""
     &nbsp;·&nbsp; {"Validated on Held-Out Customers" if is_real_model else "Unvalidated Demo Data"}
 </div>
 """, unsafe_allow_html=True)
-
